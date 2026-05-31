@@ -494,28 +494,101 @@ nav {
   z-index: 2;
 }
 
+/* 3D Flip Card Container */
 .saga-card {
+  perspective: 1200px;
+  background: transparent !important;
+  border: none !important;
+  overflow: visible !important;
+  cursor: pointer;
+}
+
+/* Card Inner Wrapper */
+.saga-card-inner {
+  position: relative;
+  width: 100%;
+  height: 440px;
+  transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transform-style: preserve-3d;
+}
+
+.saga-card.flipped .saga-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Front & Back Faces */
+.saga-card-front,
+.saga-card-back {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
+/* Front Face */
+.saga-card-front {
   border: 1px solid rgba(139,26,26,.35);
   background: linear-gradient(160deg, rgba(139,26,26,.1), rgba(5,4,4,.7));
+  z-index: 2;
+  transform: rotateY(0deg);
   overflow: hidden;
-  transition: border-color .4s, box-shadow .4s;
+  transition: border-color .4s;
 }
-.saga-card:hover { border-color: rgba(192,39,45,.5); box-shadow: 0 0 40px rgba(139,26,26,.15); }
-.saga-card:hover .saga-card-img { transform: scale(1.04); }
+.saga-card:hover .saga-card-front {
+  border-color: rgba(192,39,45,.5);
+}
+.saga-card:hover .saga-card-inner {
+  box-shadow: 0 0 40px rgba(139,26,26,.2);
+}
+.saga-card:hover .saga-card-img {
+  transform: scale(1.04);
+}
 
-.saga-card--dim {
+.saga-card--dim .saga-card-front {
   border-color: rgba(139,26,26,.2);
   background: linear-gradient(160deg, rgba(17,13,11,.9), rgba(5,4,4,.95));
 }
-.saga-card--dimmer {
+.saga-card--dimmer .saga-card-front {
   border-color: rgba(139,26,26,.12);
   background: linear-gradient(160deg, rgba(10,7,6,.9), rgba(5,4,4,.98));
 }
 
-.saga-card-media { position: relative; overflow: hidden; }
+/* Back Face */
+.saga-card-back {
+  border: 1px solid rgba(192,39,45,.5);
+  background: linear-gradient(160deg, rgba(139,26,26,.15), rgba(5,4,4,.95));
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  transition: border-color .4s;
+}
+.saga-card:hover .saga-card-back {
+  border-color: rgba(192,39,45,.7);
+}
+.saga-card--dim .saga-card-back {
+  border-color: rgba(139,26,26,.4);
+  background: linear-gradient(160deg, rgba(17,13,11,.98), rgba(5,4,4,.99));
+}
+.saga-card--dimmer .saga-card-back {
+  border-color: rgba(139,26,26,.25);
+  background: linear-gradient(160deg, rgba(10,7,6,.99), rgba(5,4,4,1));
+}
+
+.saga-card-media {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
 
 .saga-card-img {
-  width: 100%; height: 320px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: top center;
   display: block;
@@ -524,7 +597,8 @@ nav {
 }
 
 .saga-card-placeholder {
-  width: 100%; height: 320px;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -858,12 +932,13 @@ nav {
   height: 240px;
   overflow: hidden;
   border: 1px solid rgba(139,26,26,.2);
+  background: #050404;
   transition: transform .5s cubic-bezier(.25,.8,.25,1), box-shadow .5s ease, border-color .5s ease;
 }
 .carousel-slide img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
   filter: saturate(0.8) contrast(1.05);
   transition: transform .6s cubic-bezier(.25,.8,.25,1), filter .6s ease;
