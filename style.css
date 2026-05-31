@@ -564,9 +564,29 @@ nav {
   transform: rotateY(180deg);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  overflow: hidden;
+  justify-content: flex-start;
+  overflow-y: auto;
   transition: border-color .4s;
+  scrollbar-width: thin;
+  scrollbar-color: var(--crimson) var(--shadow);
+}
+.saga-card-back::-webkit-scrollbar {
+  width: 4px;
+}
+.saga-card-back::-webkit-scrollbar-track {
+  background: var(--shadow);
+}
+.saga-card-back::-webkit-scrollbar-thumb {
+  background: var(--crimson);
+  border-radius: 2px;
+}
+.saga-card-back .saga-card-desc {
+  font-size: 0.82rem;
+  line-height: 1.65;
+  margin-bottom: 0.8rem;
+}
+.saga-card-back .saga-card-desc:last-of-type {
+  margin-bottom: 1.2rem;
 }
 .saga-card:hover .saga-card-back {
   border-color: rgba(192,39,45,.7);
