@@ -703,23 +703,20 @@ nav {
 }
 
 .author-frame { position: relative; }
-.author-photo-placeholder {
+.author-photo {
   width: 260px; height: 320px;
-  background: linear-gradient(145deg, #1a1210, #0d0908);
+  object-fit: cover;
+  object-position: top center;
+  display: block;
   border: 1px solid rgba(139,26,26,.25);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: .8rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 30px rgba(139,26,26,.2);
+  filter: contrast(1.05) saturate(1.1) grayscale(0.15);
+  transition: transform .6s ease, box-shadow .6s ease, filter .6s ease;
 }
-.author-photo-placeholder span { font-size: 3rem; opacity: .2; }
-.author-photo-placeholder p {
-  font-family: 'Raleway', sans-serif;
-  font-size: .65rem;
-  letter-spacing: .2em;
-  color: rgba(200,191,181,.25);
-  text-transform: uppercase;
+.author-photo:hover {
+  transform: scale(1.02) translateY(-4px);
+  box-shadow: 0 30px 80px rgba(0,0,0,.9), 0 0 50px rgba(192,39,45,.35);
+  filter: contrast(1.05) saturate(1.15) grayscale(0);
 }
 .author-frame::after {
   content: '';
@@ -760,6 +757,138 @@ nav {
   border-color: var(--blood-bright);
   color: var(--bone);
   box-shadow: 0 0 15px rgba(139,26,26,.2);
+}
+
+/* ==================== MINHAS TELAS / OBRAS ==================== */
+#obras {
+  padding: 6rem 0 4rem;
+  background: var(--abyss);
+  position: relative;
+  overflow: hidden;
+}
+#obras::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 40%, rgba(139,26,26,.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.obras-intro {
+  text-align: center;
+  margin-bottom: 4rem;
+  padding: 0 2rem;
+}
+.obras-desc {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: rgba(200,191,181,.45);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+/* Carousel wrapper */
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Edge gradient fades */
+.carousel-gradient {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 120px;
+  z-index: 10;
+  pointer-events: none;
+}
+.carousel-gradient--left {
+  left: 0;
+  background: linear-gradient(to right, var(--abyss), transparent);
+}
+.carousel-gradient--right {
+  right: 0;
+  background: linear-gradient(to left, var(--abyss), transparent);
+}
+
+/* Carousel row wrapper (parallax target) */
+.carousel-row-wrap {
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  transition: transform .3s ease-out;
+  will-change: transform;
+}
+.carousel-row-wrap:last-child {
+  margin-bottom: 0;
+}
+
+/* Carousel rows (infinite scroll animation) */
+.carousel-row {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+  animation: carouselScroll 40s linear infinite;
+  will-change: transform;
+}
+.carousel-row--reverse {
+  animation: carouselScrollReverse 50s linear infinite;
+}
+
+/* Pause on hover */
+.carousel-wrapper:hover .carousel-row {
+  animation-play-state: paused;
+}
+
+@keyframes carouselScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes carouselScrollReverse {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* Individual slides */
+.carousel-slide {
+  position: relative;
+  flex-shrink: 0;
+  width: 320px;
+  height: 240px;
+  overflow: hidden;
+  border: 1px solid rgba(139,26,26,.2);
+  transition: transform .5s cubic-bezier(.25,.8,.25,1), box-shadow .5s ease, border-color .5s ease;
+}
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.8) contrast(1.05);
+  transition: transform .6s cubic-bezier(.25,.8,.25,1), filter .6s ease;
+}
+.slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(139,26,26,.15) 0%, rgba(5,4,4,.4) 100%);
+  transition: opacity .5s ease;
+  pointer-events: none;
+}
+
+/* Hover effects — Otherside-inspired "float up" */
+.carousel-slide:hover {
+  transform: translateY(-12px) scale(1.04);
+  box-shadow: 0 25px 60px rgba(0,0,0,.8), 0 0 40px rgba(139,26,26,.25);
+  border-color: rgba(192,39,45,.5);
+  z-index: 5;
+}
+.carousel-slide:hover img {
+  transform: scale(1.08);
+  filter: saturate(1.2) contrast(1.1);
+}
+.carousel-slide:hover .slide-overlay {
+  opacity: 0;
 }
 
 /* ==================== NEWSLETTER ==================== */
@@ -910,8 +1039,13 @@ footer {
   .saga-grid { grid-template-columns: 1fr; gap: 1.5rem; }
   .saga-intro p { font-size: 1rem; }
 
+  #obras { padding: 4rem 0 2rem; }
+  .obras-intro { margin-bottom: 2rem; }
+  .carousel-slide { width: 220px; height: 165px; }
+  .carousel-row { gap: 1rem; }
+
   #author { grid-template-columns: 1fr; padding: 4rem 1rem; gap: 2rem; }
-  .author-photo-placeholder { width: 100%; max-width: 260px; margin: 0 auto; }
+  .author-photo { width: 100%; max-width: 260px; margin: 0 auto; display: block; }
 
   #newsletter { padding: 4rem 1rem; }
   #newsletter h2 { font-size: clamp(1.4rem, 5vw, 2rem); }
@@ -943,8 +1077,11 @@ footer {
   #saga { padding: 5rem 1.5rem; }
   .saga-grid { grid-template-columns: 1fr; }
 
+  #obras { padding: 5rem 0 3rem; }
+  .carousel-slide { width: 260px; height: 195px; }
+
   #author { grid-template-columns: 1fr; padding: 5rem 1.5rem; gap: 3rem; }
-  .author-photo-placeholder { width: 100%; }
+  .author-photo { width: 100%; max-width: 300px; margin: 0 auto; display: block; }
 
   #newsletter { padding: 5rem 1.5rem; }
   .email-form { flex-direction: column; }
@@ -952,3 +1089,4 @@ footer {
 
   footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
 }
+

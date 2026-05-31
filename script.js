@@ -57,4 +57,31 @@ document.addEventListener('DOMContentLoaded', () => {
     input.value     = '';
     input.disabled  = true;
   });
+
+  /* ==================== CAROUSEL PARALLAX ==================== */
+  const obrasSection = document.getElementById('obras');
+  if (obrasSection) {
+    const wraps = obrasSection.querySelectorAll('.carousel-row-wrap');
+
+    // Scroll-based parallax: apply a subtle shift to the wrapper
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const rect = obrasSection.getBoundingClientRect();
+          const windowH = window.innerHeight;
+          if (rect.top < windowH && rect.bottom > 0) {
+            const progress = (windowH - rect.top) / (windowH + rect.height);
+            wraps.forEach((wrap, i) => {
+              const speed = parseFloat(wrap.dataset.speed) || 1;
+              const offset = (progress - 0.5) * 80 * speed * (i % 2 === 0 ? 1 : -1);
+              wrap.style.transform = `translateX(${offset}px)`;
+            });
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  }
 });
