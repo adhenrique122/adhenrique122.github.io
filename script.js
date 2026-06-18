@@ -40,23 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
   );
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  const btn   = document.getElementById('signupBtn');
-  const input = btn.previousElementSibling;
-
-  btn.addEventListener('click', () => {
-    if (!EMAIL_RE.test(input.value.trim())) {
-      input.classList.add('error');
-      const prev = input.placeholder;
-      input.placeholder = 'Please enter a valid email…';
-      setTimeout(() => { input.classList.remove('error'); input.placeholder = prev; }, 2500);
-      return;
-    }
-    btn.textContent = '✓ 4 Chapters Sent!';
-    btn.classList.add('success');
-    btn.disabled    = true;
-    input.value     = '';
-    input.disabled  = true;
-  });
+  /* Newsletter form is now handled by ConvertKit / Kit */
 
   /* ==================== CAROUSEL PARALLAX ==================== */
   const obrasSection = document.getElementById('obras');
@@ -104,4 +88,37 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }, { passive: true });
   }
+
+  /* ==================== SAGA CARD FLIP CONTROLLER ==================== */
+  document.querySelectorAll('.saga-card').forEach(card => {
+    let startX = 0;
+    let startY = 0;
+    let startTime = 0;
+
+    card.addEventListener('pointerdown', e => {
+      // Only handle primary button (left click) or touch/pen
+      if (e.button !== 0 && e.pointerType === 'mouse') return;
+      startX = e.clientX;
+      startY = e.clientY;
+      startTime = Date.now();
+    });
+
+    card.addEventListener('pointerup', e => {
+      if (e.button !== 0 && e.pointerType === 'mouse') return;
+
+      // Don't trigger if the click/tap was on a link or button
+      if (e.target.closest('a') || e.target.closest('button')) {
+        return;
+      }
+
+      const diffX = Math.abs(e.clientX - startX);
+      const diffY = Math.abs(e.clientY - startY);
+      const duration = Date.now() - startTime;
+
+      // If moved more than 8px or held down for too long, it's a drag/scroll/hold
+      if (diffX < 8 && diffY < 8 && duration < 350) {
+        card.classList.toggle('flipped');
+      }
+    });
+  });
 });

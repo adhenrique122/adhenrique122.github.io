@@ -641,11 +641,15 @@ nav {
 .saga-card-back {
   border: 1px solid rgba(192,39,45,.5);
   background: linear-gradient(160deg, rgba(139,26,26,.15), rgba(5,4,4,.95));
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(1px);
+  -webkit-transform: rotateY(180deg) translateZ(1px);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
   transition: border-color .4s;
   scrollbar-width: thin;
   scrollbar-color: var(--crimson) var(--shadow);
@@ -1117,44 +1121,122 @@ nav {
   line-height: 1.8;
 }
 
-.email-form { display: flex; max-width: 500px; margin: 0 auto 1.2rem; }
-.email-input {
-  flex: 1;
-  padding: 1rem 1.5rem;
-  font-family: 'EB Garamond', serif;
-  font-size: 1rem;
-  font-style: italic;
-  background: rgba(200,191,181,.04);
-  border: 1px solid rgba(139,26,26,.35);
-  border-right: none;
-  color: var(--bone);
-  outline: none;
-  transition: border-color .3s, box-shadow .3s;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
+/* ==================== KIT FORM OVERRIDES ==================== */
+.kit-form-wrapper {
+  max-width: 540px;
+  margin: 0 auto 1.5rem;
 }
+
+/* Reset Kit container and center it */
+.kit-form-wrapper .formkit-form[data-uid="5d364723c3"] {
+  max-width: 100% !important;
+  font-family: 'EB Garamond', serif !important;
+  margin: 0 auto !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+/* Row layout */
+.kit-form-wrapper .formkit-fields {
+  display: flex !important;
+  gap: 0 !important;
+  flex-wrap: nowrap !important;
+  justify-content: center !important;
+}
+
+.kit-form-wrapper .formkit-field {
+  flex: 1 1 auto !important;
+  margin-bottom: 0 !important;
+}
+
+/* Mobile responsive stacking for Kit form */
+@media (max-width: 640px) {
+  .kit-form-wrapper .formkit-fields {
+    flex-direction: column !important;
+  }
+  .kit-form-wrapper .formkit-input {
+    border-right: 1px solid rgba(139,26,26,.35) !important;
+    border-bottom: none !important;
+    border-radius: 0 !important;
+    text-align: center !important;
+  }
+  .kit-form-wrapper .formkit-submit {
+    width: 100% !important;
+  }
+}
+
+/* Email input */
+.kit-form-wrapper .formkit-input {
+  flex: 1 !important;
+  padding: 1rem 1.5rem !important;
+  font-family: 'EB Garamond', serif !important;
+  font-size: 1rem !important;
+  font-style: italic !important;
+  background: rgba(200,191,181,.04) !important;
+  border: 1px solid rgba(139,26,26,.35) !important;
+  border-right: none !important;
+  border-radius: 0 !important;
+  color: var(--bone) !important;
+  outline: none !important;
+  transition: border-color .3s, box-shadow .3s !important;
+  min-height: 54px !important;
+}
+.kit-form-wrapper .formkit-input::placeholder {
+  color: rgba(200,191,181,.3) !important;
+  opacity: 1 !important;
+}
+.kit-form-wrapper .formkit-input:focus {
+  border-color: rgba(192,39,45,.6) !important;
+  box-shadow: 0 0 20px rgba(139,26,26,.15) !important;
+}
+
+/* Submit button */
+.kit-form-wrapper .formkit-submit {
+  font-family: 'Cinzel', serif !important;
+  font-size: .72rem !important;
+  letter-spacing: .2em !important;
+  text-transform: uppercase !important;
+  color: var(--bone) !important;
+  background: var(--blood) !important;
+  border: 1px solid var(--blood-bright) !important;
+  border-radius: 0 !important;
+  padding: 1rem 2rem !important;
+  cursor: pointer !important;
+  transition: all .3s !important;
+  white-space: nowrap !important;
+  min-height: 54px !important;
+  margin-bottom: 0 !important;
+  flex: 0 0 auto !important;
+}
+.kit-form-wrapper .formkit-submit:hover {
+  background: var(--blood-bright) !important;
+  box-shadow: 0 0 25px rgba(192,39,45,.4) !important;
+}
+.kit-form-wrapper .formkit-submit > span {
+  padding: 0 !important;
+}
+
+/* Success / error alerts */
+.kit-form-wrapper .formkit-alert-error {
+  background: rgba(139,26,26,.15) !important;
+  border-color: rgba(192,39,45,.4) !important;
+  color: rgba(200,191,181,.8) !important;
+  border-radius: 0 !important;
+  margin-bottom: .8rem !important;
+}
+
+/* "Built with Kit" footer link — hidden */
+.kit-form-wrapper .formkit-powered-by-convertkit-container {
+  display: none !important;
+}
+
+/* Legacy selectors (kept for safety) */
+.email-form { display: flex; max-width: 500px; margin: 0 auto 1.2rem; }
+.email-input { flex: 1; padding: 1rem 1.5rem; font-family: 'EB Garamond', serif; font-size: 1rem; font-style: italic; background: rgba(200,191,181,.04); border: 1px solid rgba(139,26,26,.35); border-right: none; color: var(--bone); outline: none; transition: border-color .3s, box-shadow .3s; min-height: 44px; }
 .email-input::placeholder { color: rgba(200,191,181,.25); }
 .email-input:focus { border-color: rgba(192,39,45,.6); box-shadow: 0 0 20px rgba(139,26,26,.15); }
-.email-input.error { border-color: rgba(192,39,45,.8); }
-
-.email-btn {
-  font-family: 'Cinzel', serif;
-  font-size: .72rem;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--bone);
-  background: var(--blood);
-  border: 1px solid var(--blood-bright);
-  padding: 1rem 2rem;
-  cursor: pointer;
-  transition: all .3s;
-  white-space: nowrap;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.email-btn { font-family: 'Cinzel', serif; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--bone); background: var(--blood); border: 1px solid var(--blood-bright); padding: 1rem 2rem; cursor: pointer; transition: all .3s; white-space: nowrap; min-height: 44px; }
 .email-btn:hover { background: var(--blood-bright); box-shadow: 0 0 25px rgba(192,39,45,.4); }
 .email-btn:disabled { opacity: .6; cursor: default; }
 .email-btn.success { background: #2a5a2a; border-color: #3a7a3a; }
