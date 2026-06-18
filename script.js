@@ -62,26 +62,46 @@ document.addEventListener('DOMContentLoaded', () => {
   const obrasSection = document.getElementById('obras');
   if (obrasSection) {
     const wraps = obrasSection.querySelectorAll('.carousel-row-wrap');
+    const windowH = window.innerHeight;
 
-    // Scroll-based parallax: apply a subtle shift to the wrapper
+    // Cache section geometry — recalculate only on resize, not every scroll frame
+    let sectionTop    = 0;
+    let sectionHeight = 0;
+    let isSectionVisible = false;
+
+    function cacheSectionRect() {
+      const rect    = obrasSection.getBoundingClientRect();
+      sectionTop    = rect.top + window.scrollY;
+      sectionHeight = rect.height;
+    }
+    cacheSectionRect();
+    window.addEventListener('resize', cacheSectionRect, { passive: true });
+
+    // Only run parallax while section is in view
+    const visibilityObserver = new IntersectionObserver(
+      entries => { isSectionVisible = entries[0].isIntersecting; },
+      { rootMargin: '100px 0px' }
+    );
+    visibilityObserver.observe(obrasSection);
+
     let ticking = false;
     window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const rect = obrasSection.getBoundingClientRect();
-          const windowH = window.innerHeight;
-          if (rect.top < windowH && rect.bottom > 0) {
-            const progress = (windowH - rect.top) / (windowH + rect.height);
-            wraps.forEach((wrap, i) => {
-              const speed = parseFloat(wrap.dataset.speed) || 1;
-              const offset = (progress - 0.5) * 80 * speed * (i % 2 === 0 ? 1 : -1);
-              wrap.style.transform = `translateX(${offset}px)`;
-            });
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
-    });
+      if (!isSectionVisible || ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const scrollY   = window.scrollY;
+        const relTop    = sectionTop - scrollY;
+        const wH        = window.innerHeight;
+        if (relTop < wH && relTop + sectionHeight > 0) {
+          const progress = (wH - relTop) / (wH + sectionHeight);
+          wraps.forEach((wrap, i) => {
+            const speed  = parseFloat(wrap.dataset.speed) || 1;
+            const offset = (progress - 0.5) * 60 * speed * (i % 2 === 0 ? 1 : -1);
+            wrap.style.transform = `translateX(${offset}px)`;
+          });
+        }
+        ticking = false;
+      });
+    }, { passive: true });
   }
 });
