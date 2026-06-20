@@ -1355,6 +1355,45 @@ footer {
   #saga { padding: 5rem 1.5rem; }
   .saga-grid { grid-template-columns: 1fr; }
 
+  /* Mobile: Flat flip with auto-expanding height to prevent scroll bug */
+  .saga-card {
+    height: auto !important;
+  }
+  .saga-card-inner {
+    height: 440px;
+    transform-style: flat !important;
+    transition: height 0.4s ease, opacity 0.4s ease;
+  }
+  .saga-card.flipped .saga-card-inner {
+    transform: none !important;
+    height: auto !important;
+  }
+  .saga-card-front {
+    transition: opacity 0.4s ease;
+  }
+  .saga-card.flipped .saga-card-front {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+  }
+  .saga-card-back {
+    transform: none !important;
+    -webkit-transform: none !important;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    transition: opacity 0.4s ease;
+  }
+  .saga-card.flipped .saga-card-back {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    height: auto !important;
+    overflow-y: visible !important;
+  }
+
   #obras { padding: 5rem 0 3rem; }
   .carousel-slide { width: 260px; height: 195px; }
 
