@@ -2,6 +2,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function createParticles(count) {
   const intro = document.getElementById('intro');
+  if (!intro) return;
   for (let i = 0; i < count; i++) {
     const p = document.createElement('div');
     p.classList.add('particle');
@@ -20,16 +21,25 @@ window.addEventListener('load', () => {
   const title    = document.getElementById('introTitle');
   const subtitle = document.getElementById('introSubtitle');
 
-  setTimeout(() => {
-    title.style.cssText = 'transition:all 1.8s ease;opacity:1;transform:translateY(0)';
-  }, 400);
+  if (title) {
+    setTimeout(() => {
+      title.style.cssText = 'transition:all 1.8s ease;opacity:1;transform:translateY(0)';
+    }, 400);
+  }
 
-  setTimeout(() => {
-    subtitle.style.cssText = 'transition:all 1.6s ease;opacity:1';
-  }, 1100);
+  if (subtitle) {
+    setTimeout(() => {
+      subtitle.style.cssText = 'transition:all 1.6s ease;opacity:1';
+    }, 1100);
+  }
 
   setTimeout(() => {
     document.body.classList.add('loaded');
+    // Once intro is faded out (1.2s later), remove it entirely from DOM to free GPU/CPU resources
+    setTimeout(() => {
+      const intro = document.getElementById('intro');
+      if (intro) intro.remove();
+    }, 1200);
   }, 3200);
 });
 
@@ -52,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let sectionTop    = 0;
     let sectionHeight = 0;
     let isSectionVisible = false;
+    let wasMobile = window.innerWidth < 768;
 
     function cacheSectionRect() {
       const rect    = obrasSection.getBoundingClientRect();
@@ -59,7 +70,18 @@ document.addEventListener('DOMContentLoaded', () => {
       sectionHeight = rect.height;
     }
     cacheSectionRect();
-    window.addEventListener('resize', cacheSectionRect, { passive: true });
+    
+    window.addEventListener('resize', () => {
+      cacheSectionRect();
+      const isMobile = window.innerWidth < 768;
+      if (isMobile && !wasMobile) {
+        // Reset translate transforms on mobile breakpoint crossover
+        wraps.forEach(wrap => {
+          wrap.style.transform = '';
+        });
+      }
+      wasMobile = isMobile;
+    }, { passive: true });
 
     // Only run parallax while section is in view
     const visibilityObserver = new IntersectionObserver(
@@ -70,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let ticking = false;
     window.addEventListener('scroll', () => {
+      if (window.innerWidth < 768) return; // Skip parallax on mobile viewports
       if (!isSectionVisible || ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
