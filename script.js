@@ -44,6 +44,76 @@ window.addEventListener('load', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+  /* ==================== NAVBAR TOGGLE ==================== */
+  const toggle   = document.getElementById('navToggle');
+  const menu     = document.getElementById('navMenu');
+  const backdrop = document.getElementById('navBackdrop');
+  const nav      = document.getElementById('mainNav');
+
+  let scrollY = 0;
+
+  function openNav() {
+    // iOS-safe scroll lock: save position, fix body
+    scrollY = window.scrollY;
+    document.body.style.position   = 'fixed';
+    document.body.style.top        = `-${scrollY}px`;
+    document.body.style.width      = '100%';
+    document.body.style.overflowY  = 'scroll'; // keep scrollbar visible to avoid layout shift
+
+    toggle.classList.add('open');
+    menu.classList.add('nav-active');
+    backdrop.classList.add('active');
+    toggle.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeNav() {
+    // Restore scroll position
+    document.body.style.position  = '';
+    document.body.style.top       = '';
+    document.body.style.width     = '';
+    document.body.style.overflowY = '';
+    window.scrollTo(0, scrollY);
+
+    toggle.classList.remove('open');
+    menu.classList.remove('nav-active');
+    backdrop.classList.remove('active');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  if (toggle && menu && backdrop) {
+    toggle.addEventListener('click', () => {
+      menu.classList.contains('nav-active') ? closeNav() : openNav();
+    });
+
+    // Close when clicking backdrop
+    backdrop.addEventListener('click', closeNav);
+
+    // Close when any nav link is clicked
+    menu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', closeNav);
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && menu.classList.contains('nav-active')) closeNav();
+    });
+
+    // If window resizes above mobile breakpoint while menu is open, close it cleanly
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 960 && menu.classList.contains('nav-active')) closeNav();
+    }, { passive: true });
+  }
+
+  // Scroll-shrink effect
+  if (nav) {
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY > 40;
+      nav.classList.toggle('nav-scrolled', scrolled);
+      if (menu) menu.classList.toggle('nav-scrolled', scrolled);
+    }, { passive: true });
+  }
+
+  /* ==================== REVEAL ON SCROLL ==================== */
   const observer = new IntersectionObserver(
     entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
     { threshold: 0.1 }

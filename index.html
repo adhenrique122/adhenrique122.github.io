@@ -23,17 +23,22 @@
   </div>
 </div>
 
-<nav>
+<div class="nav-backdrop" id="navBackdrop"></div>
+<ul class="nav-links" id="navMenu" role="menu">
+  <li role="none"><a href="#synopsis" role="menuitem">The Story</a></li>
+  <li role="none"><a href="#saga" role="menuitem">The Saga</a></li>
+  <li role="none"><a href="#obras" role="menuitem">Gallery</a></li>
+  <li role="none"><a href="#author" role="menuitem">The Author</a></li>
+  <li role="none"><a href="#newsletter" role="menuitem">Stay Close</a></li>
+  <li role="none"><a href="#buy" class="nav-cta" role="menuitem">Get the Book</a></li>
+</ul>
+<nav id="mainNav">
   <a class="nav-logo" href="#">AMBU</a>
-  <ul class="nav-links">
-    <li><a href="#synopsis">The Story</a></li>
-    <li><a href="#saga">The Saga</a></li>
-    <li><a href="#obras">Gallery</a></li>
-    <li><a href="#author">The Author</a></li>
-    <li><a href="#newsletter">Stay Close</a></li>
-    <li><a href="#buy" class="nav-cta">Get the Book</a></li>
-    <li><a href="portfolio.html">Portfolio</a></li>
-  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navMenu">
+    <span class="hamburger-bar"></span>
+    <span class="hamburger-bar"></span>
+    <span class="hamburger-bar"></span>
+  </button>
 </nav>
 
 <section id="hero">
