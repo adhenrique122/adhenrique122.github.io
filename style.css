@@ -832,23 +832,23 @@ nav.nav-scrolled {
 
 .saga-placeholder-ring {
   position: relative;
-  width: 90px; height: 90px;
+  width: 130px; height: 130px;
 }
 .saga-placeholder-ring-outer {
   position: absolute;
   inset: 0;
-  border: 1px solid rgba(139,26,26,.35);
+  border: 1px solid rgba(139,26,26,.5);
   border-radius: 50%;
   animation: pulse 3s ease-in-out infinite;
 }
-.saga-placeholder-ring-outer--faint { border-color: rgba(139,26,26,.2); animation-duration: 4s; }
+.saga-placeholder-ring-outer--faint { border-color: rgba(139,26,26,.3); animation-duration: 4s; }
 .saga-placeholder-ring-inner {
   position: absolute;
-  inset: 10px;
-  border: 1px solid rgba(139,26,26,.2);
+  inset: 14px;
+  border: 1px solid rgba(139,26,26,.25);
   border-radius: 50%;
 }
-.saga-placeholder-ring-inner--faint { border-color: rgba(139,26,26,.1); }
+.saga-placeholder-ring-inner--faint { border-color: rgba(139,26,26,.15); }
 .saga-placeholder-numeral {
   position: absolute;
   inset: 0;
@@ -856,10 +856,15 @@ nav.nav-scrolled {
   align-items: center;
   justify-content: center;
   font-family: 'Cinzel Decorative', serif;
-  font-size: 1.6rem;
-  color: rgba(139,26,26,.4);
+  font-size: 3.8rem;
+  color: rgba(192,39,45,.55);
+  animation: glowPulse 3s ease-in-out infinite;
 }
-.saga-placeholder-numeral--faint { color: rgba(139,26,26,.25); }
+.saga-placeholder-numeral--faint { color: rgba(192,39,45,.45); }
+@keyframes glowPulse {
+  0%, 100% { text-shadow: 0 0 12px rgba(192,39,45,.2); opacity: .7; }
+  50%       { text-shadow: 0 0 28px rgba(224,48,48,.65); opacity: 1; }
+}
 
 .saga-placeholder-sub {
   text-align: center;
