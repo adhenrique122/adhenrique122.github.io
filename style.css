@@ -290,6 +290,22 @@ nav.nav-scrolled {
 
 .hero-text { position: relative; z-index: 2; padding: 8rem 0 4rem; }
 
+.hero-genre-tag {
+  font-family: 'Raleway', sans-serif;
+  font-size: .72rem;
+  letter-spacing: .12em;
+  color: rgba(200, 180, 150, 0.55);
+  margin-bottom: 1.2rem;
+  font-style: italic;
+  opacity: 0;
+  animation: fadeUp .8s ease .2s forwards;
+}
+
+/* Mobile-only duplicate shown above the book cover */
+.hero-genre-tag--mobile-only {
+  display: none;
+}
+
 .hero-eyebrow {
   font-family: 'Raleway', sans-serif;
   font-size: .68rem;
@@ -1600,6 +1616,20 @@ footer {
   .hero-actions { justify-content: center; flex-wrap: wrap; }
   .hero-cover { order: -1; }
 
+  /* Show mobile-only genre tag above book cover; hide the original inside hero-text */
+  .hero-genre-tag--mobile-only {
+    display: block;
+    order: -2;
+    text-align: center;
+    margin-bottom: 0;
+    animation: none;
+    opacity: 1;
+  }
+  .hero-text .hero-genre-tag:not(.hero-genre-tag--mobile-only) {
+    display: none;
+  }
+
+
   #synopsis { grid-template-columns: 1fr; padding: 5rem 1.5rem; gap: 4rem; }
 
   #saga { padding: 5rem 1.5rem; }
@@ -1975,8 +2005,17 @@ footer {
 
 .beta-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.beta-grid .beta-card:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  max-width: 440px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 @media (max-width: 900px) {
@@ -1985,6 +2024,7 @@ footer {
 
 @media (max-width: 580px) {
   .beta-grid { grid-template-columns: 1fr; }
+  .beta-grid .beta-card:last-child:nth-child(odd) { grid-column: auto; max-width: none; }
   #beta-readers { padding: 5rem 1.5rem; }
 }
 
